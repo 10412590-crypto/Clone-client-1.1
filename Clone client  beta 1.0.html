@@ -7,7 +7,7 @@
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0c0e17; font-family: sans-serif; user-select: none; }
         
-        /* 1. MENÚ PRINCIPAL DEL LANZADOR */
+        /* 1. MENÚ PRINCIPAL ESTILO MINECRAFT 1.21.11 */
         #launcher-ui { 
             position: absolute; 
             top: 0; 
@@ -69,7 +69,7 @@
         .beta-tag { color: #ffaa00; text-shadow: 1px 1px 0px #222; }
         .version-info { position: absolute; bottom: 10px; left: 10px; color: #ffffff; font-size: 14px; text-shadow: 1px 1px 2px #000; }
 
-        /* 2. PANTALLA DE CARGA CON TU LOGO REQUERIDO */
+        /* 2. PANTALLA DE CARGA OFICIAL CON TU LOGO REQUERIDO */
         #loading-screen { 
             position: absolute; 
             top: 0; 
@@ -93,9 +93,13 @@
         .progress-bar-container { width: 280px; height: 6px; background-color: #e0e0e0; border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background-color: #000000; border-radius: 3px; transition: width 0.3s ease-out; }
 
-        /* 3. CONTENEDOR DEL ENTORNO DEL JUEGO */
-        #game-container { width: 100%; height: 100%; display: none; }
-        iframe { width: 100%; height: 100%; border: none; }
+        /* CONTENEDOR PARA EL LIENZO REAL (CANVAS 3D) DE MINECRAFT */
+        #canvas_container {
+            width: 100%;
+            height: 100%;
+            display: none;
+            background-color: #000;
+        }
     </style>
 </head>
 <body>
@@ -112,7 +116,7 @@
                 Player of Eaglercraft (Estable)
             </button>
             
-            <button class="launcher-btn premium-btn" onclick="alertaProximaFase()">
+            <button class="launcher-btn premium-btn" onclick="iniciarCliente('eaglercraft_minecraft_premium')">
                 Eaglercraft & Minecraft Premium <span class="beta-tag">[BETA]</span>
             </button>
         </div>
@@ -120,7 +124,7 @@
         <div class="version-info">Minecraft 1.21.11 / New Clone Client</div>
     </div>
 
-    <!-- PANTALLA DE CARGA CON EL LOGO EN BLANCO -->
+    <!-- PANTALLA DE CARGA CON EL LOGO BLANCO -->
     <div id="loading-screen">
         <img class="eagler-logo" src="https://githubusercontent.com" alt="Eaglercraft Logo">
         <div class="progress-bar-container">
@@ -128,66 +132,61 @@
         </div>
     </div>
 
-    <!-- CONTENEDOR DEL JUEGO -->
-    <div id="game-container">
-        <iframe id="minecraft-frame" src=""></iframe>
+    <!-- AQUÍ SE ENRAIZA EL MENÚ Y EL MUNDO 3D OFICIAL DE MINECRAFT -->
+    <div id="canvas_container">
+        <canvas id="crafterea_canvas" style="width:100%; height:100%;"></canvas>
     </div>
 
+    <!-- ENLACE AL ARCHIVO JAVASCRIPT DE TRUCOS -->
     <script src="classes.js"></script>
 
+    <!-- INYECTORES Y SCRIPTS DE ARRANQUE OFICIALES DE EAGLERCRAFT -->
     <script>
         function iniciarCliente(seccionId) {
             if (typeof cloneClient !== 'undefined') {
                 cloneClient.switchSection(seccionId);
                 
+                // 1. Mostrar pantalla de carga oficial bajo tu logo
                 document.getElementById('launcher-ui').style.display = 'none';
                 document.getElementById('loading-screen').style.display = 'flex';
 
                 const progressBar = document.getElementById('progress-fill');
                 let progreso = 0;
                 
+                // Control dinámico de la barra de progreso
                 const interval = setInterval(() => {
                     if (progreso < 95) {
-                        progreso += Math.floor(Math.random() * 8) + 3;
+                        progreso += Math.floor(Math.random() * 6) + 2;
                         if (progreso > 95) progreso = 95;
                         progressBar.style.width = progreso + '%';
                     }
-                }, 120);
+                }, 100);
 
-                const frame = document.getElementById('minecraft-frame');
+                // 2. INYECTOR MAESTRO DEL ENTORNO DE JUEGO (Carga los scripts core en el hilo principal)
+                const scriptBase = document.createElement('script');
+                scriptBase.src = "https://eaglercraft.ru"; // Lógica core gráfica original con Singleplayer
                 
-                // INYECTOR MAESTRO CON INTEGRACIÓN DE MUNDOS SINGLEPLAYER OFFLINE
-                const doc = frame.contentWindow.document || frame.contentDocument;
-                doc.open();
-                doc.write(`
-                    <html>
-                    <head><style>body,html{margin:0;padding:0;overflow:hidden;width:100%;height:100%;}</style></head>
-                    <body>
-                        <!-- Servidor espejo con motor de indexación de guardados locales en IndexedDB activado -->
-                        <iframe src="https://eaglercraft.ru" style="width:100%;height:100%;border:none;"></iframe>
-                    </body>
-                    </html>
-                `);
-                doc.close();
-
-                frame.onload = function() {
+                scriptBase.onload = function() {
                     clearInterval(interval);
                     progressBar.style.width = '100%';
                     
+                    // 3. Cuando el motor gráfico termine de cargar, oculta la carga y enciende el lienzo 3D
                     setTimeout(() => {
                         document.getElementById('loading-screen').style.display = 'none';
-                        document.getElementById('game-container').style.display = 'block';
-                        console.log("[Launcher] Singleplayer y Multijugador inyectados correctamente.");
-                    }, 500);
+                        document.getElementById('canvas_container').style.display = 'block';
+                        
+                        // Inicialización oficial de las librerías WebGL de Eaglercraft para renderizar el menú
+                        if (window.main) {
+                            window.main(); // Dispara el arranque del menú y mundos locales
+                            console.log("[Launcher] ¡Motor inicializado! Disparando mundos de Un Jugador y Multijugador.");
+                        }
+                    }, 400);
                 };
-            } else {
-                alert("Error: classes.js ausente.");
-            }
-        }
 
-        function alertaProximaFase() {
-            alert("Esta sección está apartada. ¡Empezaremos a programar el puente Premium y sus servidores otro día!");
+                document.body.appendChild(scriptBase);
+            }
         }
     </script>
 </body>
 </html>
+
