@@ -1,280 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clone Client - Full 1.21 PvP Edition</title>
+    <title>New Clone Client - Minecraft 1.21.11 Web Edition</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            text-align: center; 
-            padding-top: 20px; 
-            background: #09090e; 
-            color: #e2e8f0; 
-        }
-        .container {
-            max-width: 650px;
-            margin: 0 auto;
-            background: #11111b;
-            padding: 25px;
-            border-radius: 16px;
-            border: 2px solid #a855f7;
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
-        }
-        h1 { color: #a855f7; margin-bottom: 5px; font-size: 28px; text-transform: uppercase; letter-spacing: 2px; }
-        .version { color: #3b82f6; font-weight: bold; font-size: 14px; margin-bottom: 20px; }
-        .status { font-size: 18px; color: #10b981; font-weight: bold; margin: 15px 0; letter-spacing: 1px; }
-        .modules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; margin-top: 20px; }
-        .module-card { background: #1a1a2e; padding: 15px; border-radius: 10px; border: 1px solid #334155; }
-        .module-card h3 { margin: 0 0 8px 0; color: #f59e0b; font-size: 16px; }
-        .module-card p { margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.4; }
-        strong { color: #f43f5e; }
-        .footer { margin-top: 25px; color: #475569; font-size: 11px; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0c0e17; font-family: sans-serif; }
+        #launcher-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #0f111a 0%, #1c1e2e 100%); z-index: 10; transition: opacity 0.5s ease; }
+        .menu-box { background: rgba(20, 24, 41, 0.95); border: 2px solid #00ffcc; border-radius: 12px; padding: 40px; width: 420px; text-align: center; box-shadow: 0 0 30px rgba(0, 255, 204, 0.25); }
+        h1 { color: #00ffcc; margin: 0 0 5px 0; font-size: 28px; }
+        .subtitle { color: #5c627d; font-size: 14px; margin-bottom: 30px; font-style: italic; }
+        .launcher-btn { display: block; width: 100%; background: #16192b; color: #ffffff; border: 1px solid #333952; padding: 15px; margin: 15px 0; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 16px; transition: 0.2s; }
+        .launcher-btn:hover { background: #222741; border-color: #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); }
+        .beta-tag { color: #ffaa00; font-size: 12px; }
+        #game-container { width: 100%; height: 100%; display: none; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>Clone Client</h1>
-        <div class="version">VERSION 1.21 - FULL EXPANSION SUITE</div>
-        
-        <div class="status">● STEALTH BYPASS ENGINE: ACTIVE</div>
-        
-        <div class="modules-grid">
-            <!-- 1.20 Legacy Anchor Trigger -->
-            <div class="module-card">
-                <h3>[F] Insta-Anchor Spam</h3>
-                <p>Bypasses click delay to instantly charge and detonate Respawn Anchors with Glowstone.</p>
-            </div>
-            <!-- 1.21 Mace Module -->
-            <div class="module-card">
-                <h3>[V] Auto-Mace Smash</h3>
-                <p>Executes an ultra-fast critical hit sequence to maximize 1.21 Mace damage scaling from heights.</p>
-            </div>
-            <!-- 1.21 Wind Charge Module -->
-            <div class="module-card">
-                <h3>[C] Wind Charge Clutch</h3>
-                <p>Instantly fires a Wind Charge at your feet for emergency height boosts or falling negation.</p>
-            </div>
-            <!-- 1.21 Enchantments Module -->
-            <div class="module-card">
-                <h3>[X] Breaching Burst</h3>
-                <p>Simulates armor-piercing combo frames optimized for the new 1.21 Breaching enchantment.</p>
-            </div>
-            <!-- 1.21 Effect Counters -->
-            <div class="module-card">
-                <h3>[Z] Oozing & Infestation Clear</h3>
-                <p>Triggers extreme-speed defensive sweeps to instantly clear spawned Slimes/Silverfish from 1.21 potions.</p>
-            </div>
-            <!-- 1.21 Ominous Mode -->
-            <div class="module-card">
-                <h3>[G] Ominous Trial Assistant</h3>
-                <p>Optimizes weapon swap frames for high-density mob fights inside 1.21 Ominous Trial Chambers.</p>
-            </div>
-        </div>
-
-        <div class="footer">
-            All background tasks are sandboxed. Browser context menus bypassed for lock prevention.
+    <div id="launcher-ui">
+        <div class="menu-box">
+            <h1>New Clone Client</h1>
+            <div class="subtitle">Eaglercraft 1.21.11 - Optimizado</div>
+            <button class="launcher-btn" onclick="iniciarCliente('player_of_eaglercraft')">Player of Eaglercraft (Estable)</button>
+            <button class="launcher-btn" onclick="iniciarCliente('eaglercraft_minecraft_premium')">Eaglercraft & Minecraft Premium <span class="beta-tag">[BETA]</span></button>
         </div>
     </div>
-
+    <div id="game-container"><iframe id="minecraft-frame" src=""></iframe></div>
+    <script src="classes.js"></script>
     <script>
-    // --- GLOBAL ENGINE STATE ---
-    let anchorInterval = null;
-    let clearingInterval = null;
-    const SPAM_DELAY_MS = 10; 
-
-    // --- INTERFACE HARDWARE SIMULATION ---
-    function simulateRightClick() {
-        const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true, view: window, button: 2 });
-        document.dispatchEvent(event);
-    }
-
-    function simulateLeftClick() {
-        const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true, view: window, button: 0 });
-        document.dispatchEvent(event);
-    }
-
-    // --- CORE KEY监听 ENGINE ---
-    window.addEventListener('keydown', (e) => {
-        const pressedKey = e.key.toLowerCase();
-
-        // 1. [F] Insta-Anchor / Glowstone Spam
-        if (pressedKey === 'f' && !anchorInterval) {
-            anchorInterval = setInterval(simulateRightClick, SPAM_DELAY_MS);
-        }
-
-        // 2. [V] 1.21 Auto-Mace Smash Criticals
-        if (pressedKey === 'v') {
-            for(let i = 0; i < 7; i++) {
-                setTimeout(simulateLeftClick, i * 4); // Fast sequence to lock critical frame
-            }
-        }
-
-        // 3. [C] 1.21 Wind Charge Clutch & Jump
-        if (pressedKey === 'c') {
-            simulateRightClick(); 
-        }
-
-        // 4. [X] 1.21 Breaching Burst Combo
-        if (pressedKey === 'x') {
-            for(let i = 0; i < 4; i++) {
-                setTimeout(simulateLeftClick, i * 8); // Tailored delay for armor-piercing cooldowns
-            }
-        }
-
-        // 5. [Z] 1.21 Oozing & Infestation Counter-Spam (Hold to sweep area)
-        if (pressedKey === 'z' && !clearingInterval) {
-            clearingInterval = setInterval(simulateLeftClick, 15); // Sweeps screen of small entities
-        }
-
-        // 6. [G] 1.21 Ominous Trial Weapon Interchanger
-        if (pressedKey === 'g') {
-            simulateLeftClick();
-            setTimeout(simulateRightClick, 20); // Quick attack-to-shield/potion swap
-        }
-    });
-
-    // --- MACRO DEACTIVATION ENGINE ---
-    window.addEventListener('keyup', (e) => {
-        const releasedKey = e.key.toLowerCase();
-
-        if (releasedKey === 'f' && anchorInterval) {
-            clearInterval(anchorInterval);
-            anchorInterval = null;
-        }
-
-        if (releasedKey === 'z' && clearingInterval) {
-            clearInterval(clearingInterval);
-            clearingInterval = null;
-        }
-    });
-
-    // --- SECURITY BYPASS ---
-    window.addEventListener('contextmenu', (e) => {
-        e.preventDefault(); // Disables right-click menu block during fights
-    });
-    </script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Client v1.12.2 - Crystal PvP Pro</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #06050a; font-family: 'Segoe UI', Arial, sans-serif; }
-        #game-frame { width: 100%; height: 100%; position: relative; }
-        iframe { width: 100%; height: 100%; border: none; display: block; }
-        
-        .pvp-hud {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(15, 10, 25, 0.85);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 5px solid #bd00ff;
-            color: #ffffff;
-            pointer-events: none;
-            z-index: 99999;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-        }
-        .pvp-hud h2 { font-size: 15px; color: #bd00ff; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; }
-        .pvp-hud p { font-size: 12px; color: #c4c9d4; margin-bottom: 4px; }
-        .status-on { color: #00ff66; font-weight: bold; }
-        .shortcut-hint { background: rgba(255,255,255,0.15); padding: 1px 5px; border-radius: 3px; color: #fff; font-family: monospace; }
-    </style>
-</head>
-<body>
-
-    <div class="pvp-hud">
-        <h2>Crystal PvP Client v1.12.2</h2>
-        <p>⚡ Crystal Optimize: <span class="status-on">ENABLED (0ms Delay)</span></p>
-        <p>⚓ Anchor Support: <span class="status-on">ENABLED</span></p>
-        <p>🌧️ No Rain Mod: <span class="status-on">ENABLED (Clear Skies)</span></p>
-        <p>🛡️ Macro Auto-Totem: <span class="status-on">READY</span></p>
-        <p style="margin-top: 8px; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 5px;">
-            Shortcuts: Press <span class="shortcut-hint">F</span> or <span class="shortcut-hint">Shift+Right Click</span> for Fast Totem.
-        </p>
-    </div>
-
-    <div id="game-frame">
-        <iframe id="eagler-game" src="https://githack.com" allow="fullscreen; pointer-lock;"></iframe>
-    </div>
-
-    <script>
-        // ESTO SE ENCARGA DE QUE LOS MODS SÍ SIRVAN E INYECTEN AL JUEGO
-        window.addEventListener('DOMContentLoaded', () => {
-            console.log("[Modern Client] Injecting configurations...");
-            try {
-                if (window.localStorage) {
-                    // 1. MOD FULLBRIGHT (Brillo infinito forzado en el motor)
-                    localStorage.setItem('g_gamma', '10.0');
-                    localStorage.setItem('eaglercraft_gamma', '10.0');
-                    localStorage.setItem('cl_fullbright', 'true');
-                    
-                    // 2. MOD CRYSTAL OPTIMIZE (Remueve el retraso y partículas al romper cristales)
-                    localStorage.setItem('pvp_crystal_optimize', 'true');
-                    localStorage.setItem('render_crystal_particles', 'false');
-                    
-                    // 3. MOD ANCHOR SUPPORT (Corrige hitboxes y optimiza explosiones de Respawn Anchor)
-                    localStorage.setItem('pvp_anchor_support', 'true');
-                    localStorage.setItem('fast_anchor_rendering', 'true');
-                    localStorage.setItem('disable_explosion_particles', 'true');
-                    localStorage.setItem('cl_explosion_shakes', 'false');
-
-                    // 4. MOD NO RAIN (Quita la lluvia por completo para subir FPS)
-                    localStorage.setItem('cl_no_rain', 'true');
-                    localStorage.setItem('weather_render', 'false');
-                    localStorage.setItem('cl_sky_particles', 'false');
-                    
-                    // 5. MAX PERFORMANCE (Ajustes extra anti-lag)
-                    localStorage.setItem('cl_fps_limit', '0'); // Unlimited FPS
-                    localStorage.setItem('cl_fancy_graphics', 'false');
+        function iniciarCliente(seccionId) {
+            if (typeof cloneClient !== 'undefined') {
+                cloneClient.switchSection(seccionId);
+                const frame = document.getElementById('minecraft-frame');
+                if (seccionId === 'eaglercraft_minecraft_premium') {
+                    frame.src = "https://eaglercraft.ru"; 
+                } else {
+                    frame.src = "https://eaglercraft.com"; 
                 }
-            } catch (e) { 
-                console.error("Local storage access restricted."); 
-            }
-        });
-
-        // 5. MOD MACRO AUTO-TOTEM (Simulación de paquetes de teclado)
-        const gameFrame = document.getElementById('eagler-game');
-
-        function triggerFastTotem() {
-            console.log("[PvP Engine] Macro triggered: Swapping to offhand.");
-            if(gameFrame && gameFrame.contentWindow) {
-                // Envía la pulsación de la tecla F directo a la pestaña del juego interno
-                const eventF = new KeyboardEvent('keydown', {
-                    key: 'f',
-                    code: 'KeyF',
-                    keyCode: 70,
-                    which: 70,
-                    bubbles: true
-                });
-                gameFrame.contentWindow.dispatchEvent(eventF);
+                document.getElementById('launcher-ui').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('launcher-ui').style.display = 'none';
+                    document.getElementById('game-container').style.display = 'block';
+                }, 500);
+            } else {
+                alert("Alerta: No se encontró classes.js.");
             }
         }
-
-        // Activa la macro al presionar la F físicamente
-        window.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'f') {
-                triggerFastTotem();
-            }
-        });
-
-        // Activa la macro con Shift + Click Derecho
-        window.addEventListener('mousedown', (e) => {
-            if (e.button === 2 && e.shiftKey) {
-                e.preventDefault(); 
-                triggerFastTotem();
-            }
-        });
     </script>
-
 </body>
 </html>
+
