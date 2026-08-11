@@ -120,14 +120,14 @@
         .progress-bar-container { width: 280px; height: 6px; background-color: #333333; border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background-color: #ffffff; border-radius: 3px; transition: width 0.3s ease-out; }
 
-        /* 3. CONTENEDOR DEL JUEGO */
+        /* 3. CONTENEDOR GRÁFICO DEL JUEGO */
         #game-container { width: 100%; height: 100%; display: none; }
         iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <!-- MENÚ PRINCIPAL CON PASARELA DE SECCIONES -->
+    <!-- MENÚ PRINCIPAL -->
     <div id="launcher-ui">
         <div class="logo-container">
             <div class="mc-main-title">Minecraft</div>
@@ -135,12 +135,12 @@
         </div>
 
         <div class="menu-box">
-            <!-- Sección Principal Activa -->
+            <!-- Botón Sección 1 Jugable -->
             <button class="launcher-btn" onclick="iniciarCliente('player_of_eaglercraft')">
                 Player of Eaglercraft (Estable)
             </button>
             
-            <!-- Sección Reservada para el próximo día -->
+            <!-- Botón Sección 2 en Espera -->
             <button class="launcher-btn premium-btn" onclick="alertaProximaFase()">
                 Eaglercraft & Minecraft Premium <span class="beta-tag">[BETA]</span>
             </button>
@@ -149,7 +149,7 @@
         <div class="version-info">Minecraft 1.21.11 / New Clone Client</div>
     </div>
 
-    <!-- PANTALLA DE CARGA INYECTADA -->
+    <!-- PANTALLA DE CARGA OFICIAL -->
     <div id="loading-screen">
         <div class="mc-loading-logo">MINECRAFT</div>
         <div class="progress-bar-container">
@@ -157,7 +157,7 @@
         </div>
     </div>
 
-    <!-- CONTENEDOR GRÁFICO 3D -->
+    <!-- CONTENEDOR DEL JUEGO -->
     <div id="game-container">
         <iframe id="minecraft-frame" src=""></iframe>
     </div>
@@ -169,23 +169,27 @@
             if (typeof cloneClient !== 'undefined') {
                 cloneClient.switchSection(seccionId);
                 
-                // Despliega la barra de progreso oficial de Minecraft
+                // 1. Despliega la pantalla negra original de carga
                 document.getElementById('launcher-ui').style.display = 'none';
                 document.getElementById('loading-screen').style.display = 'flex';
 
                 const progressBar = document.getElementById('progress-fill');
                 let progreso = 0;
+                
+                // Animación de la barra de progreso
                 const interval = setInterval(() => {
-                    if (progreso < 85) {
-                        progreso += Math.floor(Math.random() * 15) + 5;
-                        if (progreso > 85) progreso = 85;
+                    if (progreso < 90) {
+                        progreso += Math.floor(Math.random() * 10) + 5;
+                        if (progreso > 90) progreso = 90;
                         progressBar.style.width = progreso + '%';
                     }
-                }, 250);
+                }, 200);
 
+                // 2. INYECTOR WEB LIBRE: Carga una réplica de Eaglercraft Web distribuida en servidores CDN abiertos
                 const frame = document.getElementById('minecraft-frame');
-                frame.src = "https://eaglercraft.com"; 
+                frame.src = "https://q134.net"; 
 
+                // 3. Al completarse la carga interna del frame, la barra llega al 100% y abre el mundo
                 frame.onload = function() {
                     clearInterval(interval);
                     progressBar.style.width = '100%';
@@ -193,17 +197,15 @@
                     setTimeout(() => {
                         document.getElementById('loading-screen').style.display = 'none';
                         document.getElementById('game-container').style.display = 'block';
-                        console.log("[Launcher] Motor cargado al 100% en canal estable.");
-                    }, 400);
+                        console.log("[Launcher] Renderizado 3D inicializado con éxito.");
+                    }, 500);
                 };
             } else {
-
             }
         }
 
-        // Manejador temporal para apartar la segunda sección
         function alertaProximaFase() {
-            alert(esta parte esta en fase beta);
+            alert("Esta sección está apartada. ¡Empezaremos a programar el puente Premium y sus servidores otro día!");
         }
     </script>
 </body>
