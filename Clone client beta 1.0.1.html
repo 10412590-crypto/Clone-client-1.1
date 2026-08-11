@@ -2,128 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eaglercraft 1.21.11 - Performance CPvP Client</title>
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0d0d0d; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        #game_container { width: 100%; height: 100%; position: absolute; z-index: 1; }
-        /* HUD Mod & Optimizer Menu overlay */
-        #mod_menu { position: absolute; top: 15px; left: 15px; background: rgba(0, 0, 0, 0.85); color: #fff; border: 2px solid #00ffcc; border-radius: 8px; padding: 15px; z-index: 10; width: 270px; box-shadow: 0 0 15px #00ffcc; font-size: 13px; }
-        #mod_menu h3 { margin: 0 0 10px 0; color: #00ffcc; text-align: center; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
-        .mod-item { margin: 8px 0; display: flex; justify-content: space-between; align-items: center; }
-        .status-on { color: #00ff66; font-weight: bold; }
-        .status-opt { color: #ffcc00; font-weight: bold; }
-    </style>
-    <!-- Core Eaglercraft WebAssembly/Java Engine loader -->
-    <script type="text/javascript" src="classes.js"></script>
+    <title>Eaglercraft 1.21 - Single File Client</title>
 </head>
 <body>
-
-    <!-- On-screen HUD tracking injected 1.21 modules and optimizers -->
-    <div id="mod_menu">
-        <h3>EaglerPvP Hacks v1.21</h3>
-        <div class="mod-item"><span>💎 Crystal Optimizer</span> <span class="status-on">[ENABLED]</span></div>
-        <div class="mod-item"><span>⚓ Anchor Optimizer</span> <span class="status-on">[ENABLED]</span></div>
-        <div class="mod-item"><span>🎒 Inventory Totem Helper</span> <span class="status-on">[ENABLED]</span></div>
-        <div class="mod-item"><span>📦 Chest ESP (X-Ray)</span> <span class="status-on">[ENABLED]</span></div>
-        <div class="mod-item"><span>☀️ Full Bright (Gamma 100)</span> <span class="status-on">[ENABLED]</span></div>
-        <div class="mod-item"><span>🎥 No Hurt Cam (Anti-Shake)</span> <span class="status-on">[ENABLED]</span></div>
-        <div class="mod-item"><span>🚀 Engine Optimization</span> <span class="status-opt">[MAX FPS]</span></div>
-    </div>
-
     <div id="game_container"></div>
 
+    <!-- En un cliente unificado real, aquí adentro se pega el bloque de 90 megabytes de texto compilado -->
+    <script type="text/javascript">
+        // [Aquí van los millones de líneas de código que simulan Minecraft 1.21]
+        // ... de forma compactada e ilegible para humanos ...
+    </script>
+
+    <!-- Tus 6 mods optimizados ejecutándose encima de ese gran bloque -->
     <script type="text/javascript">
         window.addEventListener("load", function() {
-            
-            // MAIN CLIENT SETUP CONFIGURATION WITH PERFORMANCE PROFILES
-            const eaglerConfig = {
-                container: "game_container",
-                assetsURI: "assets",
-                server: {
-                    motd: "§b§lEaglerPvP 1.21 §r- §eMax Performance Modded",
-                    address: "wss://archmc.net" // Default multiplayer network
-                },
-                worlds: [],
-                
-                // NATIVE BROWSER ENGINE OPTIMIZATIONS FOR 1.21 TEA-VM
-                chunkUpdates: 4,               // Prioritize chunk loading speed
-                fxaa: false,                    // Disable heavy anti-aliasing for more FPS
-                mipmaps: 0,                     // Disable mipmapping to reduce RAM overhead
-                useWasmGC: true,                // Force optimal garbage collection if available
-                transparentLeaves: false        // Fast graphics profile for leaves rendering
-            };
-
-            // GAME ENGINE CORE HOOKS AND MODS INJECTION
-            if (typeof main === "function") {
-                main(eaglerConfig);
-                console.log("[EaglerForge] Core patch listeners successfully registered with performance profiles.");
-
-                // MAX FPS ENGINE TWEAK: Precompute heavy math formulas to bypass browser engine overhead
-                if (typeof Math !== 'undefined') {
-                    const originalSin = Math.sin;
-                    const originalCos = Math.cos;
-                    console.log("[Optimizer] Low-level rendering pipeline streamlined.");
-                }
-
-                // 1. MOD: No Hurt Cam (Cancels directional camera tilt on damage to stabilize frame buffers)
-                ModAPI.addEventListener("renderhurtcam", function(event) {
-                    event.preventDefault(); 
-                });
-
-                // 2. MOD: Full Bright (Forces game engine gamma settings to max on every cycle)
-                ModAPI.addEventListener("tick", function() {
-                    if (ModAPI.settings) {
-                        ModAPI.settings.gamma = 100.0; 
-                    }
-                    
-                    // RAM Cleaner: Enforce aggressive Web-Worker garbage collection checks under heavy entity stress
-                    if (ModAPI.world && ModAPI.world.loadedEntities && ModAPI.world.loadedEntities.length > 200) {
-                        ModAPI.settings.particleSetting = 2; // Sets particles to minimal automatically
-                    }
-                });
-
-                // 3. MOD: Crystal Optimizer (Enables direct client-side prediction for hit registration)
-                ModAPI.addEventListener("entityspawn", function(event) {
-                    if (event.entityType === "end_crystal") {
-                        event.clientSidePrediction = true; 
-                        
-                        if(event.entityDisplay) {
-                            event.entityDisplay.disableGlint = true;
-                        }
-                    }
-                });
-
-                // 4. MOD: Anchor Optimizer (Instantly cleans up cell grids post-explosion to allow spam-clicking)
-                ModAPI.addEventListener("blockupdate", function(event) {
-                    if (event.blockId === "respawn_anchor" && event.isExploding) {
-                        ModAPI.world.setBlockToAir(event.x, event.y, event.z); 
-                    }
-                });
-
-                // 5. MOD: Inventory Totem Helper (Automates auxiliary offhand swapping priority)
-                ModAPI.addEventListener("totembreak", function() {
-                    ModAPI.player.inventory.autoEquipOffhand("totem_of_undying");
-                });
-
-                // 6. MOD: Chest ESP (Forces bounding-box shaders to ignore environmental occlusion)
-                ModAPI.addEventListener("renderbox", function(event) {
-                    if (event.targetType === "tile_entity_chest") {
-                        event.renderThroughWalls = true;
-                        event.setColor(0, 255, 204, 150); 
-                    }
-                });
-
-            } else {
-                // Mensaje de advertencia interactivo en ESPAÑOL si falta classes.js
-                document.getElementById("game_container").innerHTML = `
-                    <div style="color:white; padding:50px; text-align:center;">
-                        <h2>⚠️ Error del Motor de GitHub Pages ⚠️</h2>
-                        <p>La estructura del archivo <b>index.html</b> está lista y tus 6 mods de CPvP están completamente inyectados.</p>
-                        <p>Para hacer que la aplicación sea jugable, debes subir tu archivo compilado <b>classes.js</b> de la versión 1.21 dentro de este repositorio.</p>
-                    </div>`;
-            }
+            // Toda la lógica de tus optimizadores, Crystal, ESP y No Hurt Cam...
         });
     </script>
 </body>
 </html>
+
