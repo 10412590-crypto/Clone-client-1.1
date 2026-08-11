@@ -132,7 +132,7 @@
         </div>
     </div>
 
-    <!-- AQUÍ SE ENRAIZA EL MENÚ Y EL MUNDO 3D OFICIAL DE MINECRAFT -->
+    <!-- ENRAIZAMIENTO DEL CANVA MULTIJUGADOR Y UN JUGADOR -->
     <div id="canvas_container">
         <canvas id="crafterea_canvas" style="width:100%; height:100%;"></canvas>
     </div>
@@ -140,20 +140,19 @@
     <!-- ENLACE AL ARCHIVO JAVASCRIPT DE TRUCOS -->
     <script src="classes.js"></script>
 
-    <!-- INYECTORES Y SCRIPTS DE ARRANQUE OFICIALES DE EAGLERCRAFT -->
+    <!-- INYECTORES DE RED Y RENDERIZADO NATIVO DE MINECRAFT -->
     <script>
         function iniciarCliente(seccionId) {
             if (typeof cloneClient !== 'undefined') {
                 cloneClient.switchSection(seccionId);
                 
-                // 1. Mostrar pantalla de carga oficial bajo tu logo
+                // Mostrar pantalla de carga oficial bajo el logo de Eaglercraft sin interrupciones
                 document.getElementById('launcher-ui').style.display = 'none';
                 document.getElementById('loading-screen').style.display = 'flex';
 
                 const progressBar = document.getElementById('progress-fill');
                 let progreso = 0;
                 
-                // Control dinámico de la barra de progreso
                 const interval = setInterval(() => {
                     if (progreso < 95) {
                         progreso += Math.floor(Math.random() * 6) + 2;
@@ -162,31 +161,31 @@
                     }
                 }, 100);
 
-                // 2. INYECTOR MAESTRO DEL ENTORNO DE JUEGO (Carga los scripts core en el hilo principal)
+                // Inicialización del motor core a través de scripts planos incrustados
                 const scriptBase = document.createElement('script');
-                scriptBase.src = "https://eaglercraft.ru"; // Lógica core gráfica original con Singleplayer
+                scriptBase.src = "https://eaglercraft.ru"; 
                 
                 scriptBase.onload = function() {
                     clearInterval(interval);
                     progressBar.style.width = '100%';
                     
-                    // 3. Cuando el motor gráfico termine de cargar, oculta la carga y enciende el lienzo 3D
+                    // Al finalizar la carga, remueve el logo y despliega el Canvas en 3D
                     setTimeout(() => {
                         document.getElementById('loading-screen').style.display = 'none';
                         document.getElementById('canvas_container').style.display = 'block';
                         
-                        // Inicialización oficial de las librerías WebGL de Eaglercraft para renderizar el menú
                         if (window.main) {
-                            window.main(); // Dispara el arranque del menú y mundos locales
-                            console.log("[Launcher] ¡Motor inicializado! Disparando mundos de Un Jugador y Multijugador.");
+                            window.main(); 
+                            console.log("[Launcher] Inicialización del Canvas completada con éxito.");
                         }
                     }, 400);
                 };
 
                 document.body.appendChild(scriptBase);
+            } else {
+                console.error("[Launcher] El archivo clases.js no está enlazado.");
             }
         }
     </script>
 </body>
 </html>
-
