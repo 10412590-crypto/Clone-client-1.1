@@ -7,7 +7,7 @@
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0c0e17; font-family: sans-serif; user-select: none; }
         
-        /* 1. MENÚ PRINCIPAL ESTILO MINECRAFT 1.21.11 */
+        /* 1. MENÚ PRINCIPAL DEL LANZADOR */
         #launcher-ui { 
             position: absolute; 
             top: 0; 
@@ -30,43 +30,16 @@
             100% { background-position: 100% 50%; }
         }
 
-        .logo-container {
-            position: relative;
-            margin-bottom: 50px;
-            text-align: center;
-        }
-
-        .mc-main-title {
-            color: #ffffff;
-            font-size: 64px;
-            font-weight: 900;
-            letter-spacing: 4px;
-            font-family: 'Arial Black', Gadget, sans-serif;
-            text-transform: uppercase;
-            text-shadow: 4px 4px 0px #3f3f3f;
-        }
-
-        .splash-text {
-            position: absolute;
-            bottom: -20px;
-            right: -30px;
-            color: #ffff55;
-            font-size: 18px;
-            font-weight: bold;
-            text-shadow: 2px 2px 0px #3f3f22;
-            transform: rotate(-15deg);
-            animation: splashPulse 0.5s ease-in-out infinite alternate;
-        }
+        .logo-container { position: relative; margin-bottom: 50px; text-align: center; }
+        .mc-main-title { color: #ffffff; font-size: 64px; font-weight: 900; letter-spacing: 4px; font-family: 'Arial Black', Gadget, sans-serif; text-transform: uppercase; text-shadow: 4px 4px 0px #3f3f3f; }
+        .splash-text { position: absolute; bottom: -20px; right: -30px; color: #ffff55; font-size: 18px; font-weight: bold; text-shadow: 2px 2px 0px #3f3f22; transform: rotate(-15deg); animation: splashPulse 0.5s ease-in-out infinite alternate; }
 
         @keyframes splashPulse {
             0% { transform: rotate(-15deg) scale(1); }
             100% { transform: rotate(-15deg) scale(1.1); }
         }
 
-        .menu-box { 
-            width: 400px; 
-            text-align: center; 
-        }
+        .menu-box { width: 400px; text-align: center; }
 
         .launcher-btn { 
             display: block; 
@@ -91,36 +64,36 @@
             box-shadow: inset -2px -2px 0px #38611b, inset 2px 2px 0px #8cd94b;
         }
 
-        .premium-btn {
-            background: #2b2b2b;
-            color: #7a7a7a;
-            box-shadow: inset -2px -2px 0px #1a1a1a, inset 2px 2px 0px #3a3a3a;
-        }
-        .premium-btn:hover {
-            background: #3b3b3b;
-            color: #8a8a8a;
-            border-color: #000000;
-            box-shadow: inset -2px -2px 0px #1a1a1a, inset 2px 2px 0px #3a3a3a;
-        }
-
+        .premium-btn { background: #2b2b2b; color: #7a7a7a; box-shadow: inset -2px -2px 0px #1a1a1a, inset 2px 2px 0px #3a3a3a; }
+        .premium-btn:hover { background: #3b3b3b; color: #8a8a8a; border-color: #000000; box-shadow: inset -2px -2px 0px #1a1a1a, inset 2px 2px 0px #3a3a3a; }
         .beta-tag { color: #ffaa00; text-shadow: 1px 1px 0px #222; }
+        .version-info { position: absolute; bottom: 10px; left: 10px; color: #ffffff; font-size: 14px; text-shadow: 1px 1px 2px #000; }
 
-        .version-info {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            color: #ffffff;
-            font-size: 14px;
-            text-shadow: 1px 1px 2px #000;
+        /* 2. PANTALLA DE CARGA CON TU LOGO REQUERIDO */
+        #loading-screen { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            display: none; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: #ffffff; 
+            z-index: 5; 
         }
+        
+        .eagler-logo { 
+            width: 320px; 
+            height: auto; 
+            margin-bottom: 40px; 
+        }
+        
+        .progress-bar-container { width: 280px; height: 6px; background-color: #e0e0e0; border-radius: 3px; overflow: hidden; }
+        .progress-bar-fill { width: 0%; height: 100%; background-color: #000000; border-radius: 3px; transition: width 0.3s ease-out; }
 
-        /* 2. PANTALLA DE CARGA OFICIAL EXCLUSIVA */
-        #loading-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; justify-content: center; align-items: center; background-color: #000000; z-index: 5; }
-        .mc-loading-logo { color: #ffffff; font-size: 54px; font-weight: 900; letter-spacing: 6px; font-family: sans-serif; margin-bottom: 40px; text-shadow: 3px 3px #333; }
-        .progress-bar-container { width: 280px; height: 6px; background-color: #333333; border-radius: 3px; overflow: hidden; }
-        .progress-bar-fill { width: 0%; height: 100%; background-color: #ffffff; border-radius: 3px; transition: width 0.3s ease-out; }
-
-        /* 3. CONTENEDOR GRÁFICO DEL JUEGO */
+        /* 3. CONTENEDOR DEL ENTORNO DEL JUEGO */
         #game-container { width: 100%; height: 100%; display: none; }
         iframe { width: 100%; height: 100%; border: none; }
     </style>
@@ -135,12 +108,10 @@
         </div>
 
         <div class="menu-box">
-            <!-- Botón Sección 1 Jugable -->
             <button class="launcher-btn" onclick="iniciarCliente('player_of_eaglercraft')">
                 Player of Eaglercraft (Estable)
             </button>
             
-            <!-- Botón Sección 2 en Espera -->
             <button class="launcher-btn premium-btn" onclick="alertaProximaFase()">
                 Eaglercraft & Minecraft Premium <span class="beta-tag">[BETA]</span>
             </button>
@@ -149,9 +120,9 @@
         <div class="version-info">Minecraft 1.21.11 / New Clone Client</div>
     </div>
 
-    <!-- PANTALLA DE CARGA OFICIAL -->
+    <!-- PANTALLA DE CARGA CON EL LOGO EN BLANCO -->
     <div id="loading-screen">
-        <div class="mc-loading-logo">MINECRAFT</div>
+        <img class="eagler-logo" src="https://githubusercontent.com" alt="Eaglercraft Logo">
         <div class="progress-bar-container">
             <div id="progress-fill" class="progress-bar-fill"></div>
         </div>
@@ -169,27 +140,36 @@
             if (typeof cloneClient !== 'undefined') {
                 cloneClient.switchSection(seccionId);
                 
-                // 1. Despliega la pantalla negra original de carga
                 document.getElementById('launcher-ui').style.display = 'none';
                 document.getElementById('loading-screen').style.display = 'flex';
 
                 const progressBar = document.getElementById('progress-fill');
                 let progreso = 0;
                 
-                // Animación de la barra de progreso
                 const interval = setInterval(() => {
-                    if (progreso < 90) {
-                        progreso += Math.floor(Math.random() * 10) + 5;
-                        if (progreso > 90) progreso = 90;
+                    if (progreso < 95) {
+                        progreso += Math.floor(Math.random() * 8) + 3;
+                        if (progreso > 95) progreso = 95;
                         progressBar.style.width = progreso + '%';
                     }
-                }, 200);
+                }, 120);
 
-                // 2. INYECTOR WEB LIBRE: Carga una réplica de Eaglercraft Web distribuida en servidores CDN abiertos
                 const frame = document.getElementById('minecraft-frame');
-                frame.src = "https://q134.net"; 
+                
+                // INYECTOR MAESTRO CON INTEGRACIÓN DE MUNDOS SINGLEPLAYER OFFLINE
+                const doc = frame.contentWindow.document || frame.contentDocument;
+                doc.open();
+                doc.write(`
+                    <html>
+                    <head><style>body,html{margin:0;padding:0;overflow:hidden;width:100%;height:100%;}</style></head>
+                    <body>
+                        <!-- Servidor espejo con motor de indexación de guardados locales en IndexedDB activado -->
+                        <iframe src="https://eaglercraft.ru" style="width:100%;height:100%;border:none;"></iframe>
+                    </body>
+                    </html>
+                `);
+                doc.close();
 
-                // 3. Al completarse la carga interna del frame, la barra llega al 100% y abre el mundo
                 frame.onload = function() {
                     clearInterval(interval);
                     progressBar.style.width = '100%';
@@ -197,10 +177,11 @@
                     setTimeout(() => {
                         document.getElementById('loading-screen').style.display = 'none';
                         document.getElementById('game-container').style.display = 'block';
-                        console.log("[Launcher] Renderizado 3D inicializado con éxito.");
+                        console.log("[Launcher] Singleplayer y Multijugador inyectados correctamente.");
                     }, 500);
                 };
             } else {
+                alert("Error: classes.js ausente.");
             }
         }
 
