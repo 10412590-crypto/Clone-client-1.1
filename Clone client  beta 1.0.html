@@ -3,50 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Clone Client - Minecraft 1.21.11 Web Edition</title>
+    <title>New Clone Client - Minecraft 1.21.11</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0c0e17; font-family: sans-serif; }
-        #launcher-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #0f111a 0%, #1c1e2e 100%); z-index: 10; transition: opacity 0.5s ease; }
-        .menu-box { background: rgba(20, 24, 41, 0.95); border: 2px solid #00ffcc; border-radius: 12px; padding: 40px; width: 420px; text-align: center; box-shadow: 0 0 30px rgba(0, 255, 204, 0.25); }
-        h1 { color: #00ffcc; margin: 0 0 5px 0; font-size: 28px; }
-        .subtitle { color: #5c627d; font-size: 14px; margin-bottom: 30px; font-style: italic; }
-        .launcher-btn { display: block; width: 100%; background: #16192b; color: #ffffff; border: 1px solid #333952; padding: 15px; margin: 15px 0; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 16px; transition: 0.2s; }
-        .launcher-btn:hover { background: #222741; border-color: #00ffcc; box-shadow: 0 0 15px rgba(0, 255, 204, 0.3); }
-        .beta-tag { color: #ffaa00; font-size: 12px; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0c0e17; font-family: sans-serif; user-select: none; }
+        
+        /* 1. MENÚ PRINCIPAL ESTILO MINECRAFT 1.21.11 */
+        #launcher-ui { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://minecraft.net') center/cover no-repeat;
+            filter: backdrop-filter(blur(8px));
+            -webkit-backdrop-filter: blur(8px);
+            animation: panoramaMove 40s linear infinite alternate;
+            z-index: 10; 
+        }
+
+        @keyframes panoramaMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .logo-container {
+            position: relative;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .mc-main-title {
+            color: #ffffff;
+            font-size: 64px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            text-transform: uppercase;
+            text-shadow: 4px 4px 0px #3f3f3f;
+        }
+
+        .splash-text {
+            position: absolute;
+            bottom: -20px;
+            right: -30px;
+            color: #ffff55;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px #3f3f22;
+            transform: rotate(-15deg);
+            animation: splashPulse 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes splashPulse {
+            0% { transform: rotate(-15deg) scale(1); }
+            100% { transform: rotate(-15deg) scale(1.1); }
+        }
+
+        .menu-box { 
+            width: 400px; 
+            text-align: center; 
+        }
+
+        .launcher-btn { 
+            display: block; 
+            width: 100%; 
+            background: #4a4a4a;
+            color: #e0e0e0; 
+            border: 2px solid #000000; 
+            box-shadow: inset -2px -2px 0px #2a2a2a, inset 2px 2px 0px #6a6a6a;
+            padding: 12px; 
+            margin: 14px 0; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 16px; 
+            text-shadow: 2px 2px 0px #222;
+            box-sizing: border-box;
+        }
+
+        .launcher-btn:hover { 
+            background: #62a832; 
+            color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: inset -2px -2px 0px #38611b, inset 2px 2px 0px #8cd94b;
+        }
+
+        .premium-btn {
+            background: #2b2b2b;
+            color: #7a7a7a;
+            box-shadow: inset -2px -2px 0px #1a1a1a, inset 2px 2px 0px #3a3a3a;
+        }
+        .premium-btn:hover {
+            background: #3b3b3b;
+            color: #8a8a8a;
+            border-color: #000000;
+            box-shadow: inset -2px -2px 0px #1a1a1a, inset 2px 2px 0px #3a3a3a;
+        }
+
+        .beta-tag { color: #ffaa00; text-shadow: 1px 1px 0px #222; }
+
+        .version-info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: #ffffff;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        /* 2. PANTALLA DE CARGA OFICIAL EXCLUSIVA */
+        #loading-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; justify-content: center; align-items: center; background-color: #000000; z-index: 5; }
+        .mc-loading-logo { color: #ffffff; font-size: 54px; font-weight: 900; letter-spacing: 6px; font-family: sans-serif; margin-bottom: 40px; text-shadow: 3px 3px #333; }
+        .progress-bar-container { width: 280px; height: 6px; background-color: #333333; border-radius: 3px; overflow: hidden; }
+        .progress-bar-fill { width: 0%; height: 100%; background-color: #ffffff; border-radius: 3px; transition: width 0.3s ease-out; }
+
+        /* 3. CONTENEDOR DEL JUEGO */
         #game-container { width: 100%; height: 100%; display: none; }
         iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
+
+    <!-- MENÚ PRINCIPAL CON PASARELA DE SECCIONES -->
     <div id="launcher-ui">
+        <div class="logo-container">
+            <div class="mc-main-title">Minecraft</div>
+            <div class="splash-text">1.21.11 Edition!</div>
+        </div>
+
         <div class="menu-box">
-            <h1>New Clone Client</h1>
-            <div class="subtitle">Eaglercraft 1.21.11 - Optimizado</div>
-            <button class="launcher-btn" onclick="iniciarCliente('player_of_eaglercraft')">Player of Eaglercraft (Estable)</button>
-            <button class="launcher-btn" onclick="iniciarCliente('eaglercraft_minecraft_premium')">Eaglercraft & Minecraft Premium <span class="beta-tag">[BETA]</span></button>
+            <!-- Sección Principal Activa -->
+            <button class="launcher-btn" onclick="iniciarCliente('player_of_eaglercraft')">
+                Player of Eaglercraft (Estable)
+            </button>
+            
+            <!-- Sección Reservada para el próximo día -->
+            <button class="launcher-btn premium-btn" onclick="alertaProximaFase()">
+                Eaglercraft & Minecraft Premium <span class="beta-tag">[BETA]</span>
+            </button>
+        </div>
+
+        <div class="version-info">Minecraft 1.21.11 / New Clone Client</div>
+    </div>
+
+    <!-- PANTALLA DE CARGA INYECTADA -->
+    <div id="loading-screen">
+        <div class="mc-loading-logo">MINECRAFT</div>
+        <div class="progress-bar-container">
+            <div id="progress-fill" class="progress-bar-fill"></div>
         </div>
     </div>
-    <div id="game-container"><iframe id="minecraft-frame" src=""></iframe></div>
+
+    <!-- CONTENEDOR GRÁFICO 3D -->
+    <div id="game-container">
+        <iframe id="minecraft-frame" src=""></iframe>
+    </div>
+
     <script src="classes.js"></script>
+
     <script>
         function iniciarCliente(seccionId) {
             if (typeof cloneClient !== 'undefined') {
                 cloneClient.switchSection(seccionId);
+                
+                // Despliega la barra de progreso oficial de Minecraft
+                document.getElementById('launcher-ui').style.display = 'none';
+                document.getElementById('loading-screen').style.display = 'flex';
+
+                const progressBar = document.getElementById('progress-fill');
+                let progreso = 0;
+                const interval = setInterval(() => {
+                    if (progreso < 85) {
+                        progreso += Math.floor(Math.random() * 15) + 5;
+                        if (progreso > 85) progreso = 85;
+                        progressBar.style.width = progreso + '%';
+                    }
+                }, 250);
+
                 const frame = document.getElementById('minecraft-frame');
-                if (seccionId === 'eaglercraft_minecraft_premium') {
-                    frame.src = "https://eaglercraft.ru"; 
-                } else {
-                    frame.src = "https://eaglercraft.com"; 
-                }
-                document.getElementById('launcher-ui').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('launcher-ui').style.display = 'none';
-                    document.getElementById('game-container').style.display = 'block';
-                }, 500);
+                frame.src = "https://eaglercraft.com"; 
+
+                frame.onload = function() {
+                    clearInterval(interval);
+                    progressBar.style.width = '100%';
+                    
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.display = 'none';
+                        document.getElementById('game-container').style.display = 'block';
+                        console.log("[Launcher] Motor cargado al 100% en canal estable.");
+                    }, 400);
+                };
             } else {
+                alert("Error: classes.js ausente.");
             }
+        }
+
+        // Manejador temporal para apartar la segunda sección
+        function alertaProximaFase() {
+            alert("Esta sección está apartada. ¡Empezaremos a programar el puente Premium y sus servidores otro día!");
         }
     </script>
 </body>
 </html>
-<classes.js></classes.js>
