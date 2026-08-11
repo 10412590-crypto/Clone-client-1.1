@@ -63,7 +63,6 @@
                 if (typeof Math !== 'undefined') {
                     const originalSin = Math.sin;
                     const originalCos = Math.cos;
-                    // Injecting lookup array logic conceptually for intensive rendering Math blocks
                     console.log("[Optimizer] Low-level rendering pipeline streamlined.");
                 }
 
@@ -80,7 +79,6 @@
                     
                     // RAM Cleaner: Enforce aggressive Web-Worker garbage collection checks under heavy entity stress
                     if (ModAPI.world && ModAPI.world.loadedEntities && ModAPI.world.loadedEntities.length > 200) {
-                        // Optimizes particle engine limits client-side during large CPvP fights
                         ModAPI.settings.particleSetting = 2; // Sets particles to minimal automatically
                     }
                 });
@@ -90,7 +88,6 @@
                     if (event.entityType === "end_crystal") {
                         event.clientSidePrediction = true; 
                         
-                        // Performance Tweak: Hide crystal flash animation to prevent frame drops
                         if(event.entityDisplay) {
                             event.entityDisplay.disableGlint = true;
                         }
@@ -118,12 +115,12 @@
                 });
 
             } else {
-                // Interactive fallback interface if classes.js is missing from root
+                // Mensaje de advertencia interactivo en ESPAÑOL si falta classes.js
                 document.getElementById("game_container").innerHTML = `
                     <div style="color:white; padding:50px; text-align:center;">
-                        <h2>⚠️ GitHub Pages Engine Error ⚠️</h2>
-                        <p>The optimized index.html structure is ready and your 6 CPvP mods are fully injected.</p>
-                        <p>To make the application playable, you must drop your compiled 1.21 <b>classes.js</b> file into this repository.</p>
+                        <h2>⚠️ Error del Motor de GitHub Pages ⚠️</h2>
+                        <p>La estructura del archivo <b>index.html</b> está lista y tus 6 mods de CPvP están completamente inyectados.</p>
+                        <p>Para hacer que la aplicación sea jugable, debes subir tu archivo compilado <b>classes.js</b> de la versión 1.21 dentro de este repositorio.</p>
                     </div>`;
             }
         });
